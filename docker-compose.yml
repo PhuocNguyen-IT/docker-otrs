@@ -1,6 +1,14 @@
 version: '3'
 
 services:
+  mariadb:
+    image: juanluisbaptiste/otrs-mariadb:latest
+    expose:
+      - '3306:3306'
+    env_file: .env
+    volumes:
+      - ./volumes/mysql:/var/lib/mysql
+      - /etc/localtime:/etc/localtime:ro
   otrs:
     image: juanluisbaptiste/otrs:latest
     ports:
@@ -23,14 +31,7 @@ services:
       - ./volumes/addons:/opt/otrs/addons
       - ./volumes/db_upgrade:/opt/otrs/db_upgrade
       - /etc/localtime:/etc/localtime:ro
-  mariadb:
-    image: juanluisbaptiste/otrs-mariadb:latest
-    expose:
-      - '3306:3306'
-    env_file: .env
-    volumes:
-      - ./volumes/mysql:/var/lib/mysql
-      - /etc/localtime:/etc/localtime:ro
+
 # If you need a SMTP relay you can use this service
   # postfix:
   #   image: juanluisbaptiste/postfix:latest
